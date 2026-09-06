@@ -4,4 +4,6 @@ node_modules/
 *.log
 
 # Internal documentation — kept on disk, never committed or deployed
-*.md
+CLAUDE.MD
+BRAND.md
+_source/font-cache/README.md
