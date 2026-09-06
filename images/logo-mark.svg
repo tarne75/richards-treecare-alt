@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Richard's Tree Care">
+  <path d="M21.5 25h5l1.3 17.4a1.5 1.5 0 0 1-1.5 1.6h-4.6a1.5 1.5 0 0 1-1.5-1.6Z" fill="#8d3405"/>
+  <g fill="#18320f">
+    <circle cx="15" cy="20.5" r="7.6"/>
+    <circle cx="33" cy="20.5" r="7.6"/>
+    <circle cx="24" cy="13.6" r="9.6"/>
+    <circle cx="24" cy="22.5" r="8.6"/>
+  </g>
+</svg>

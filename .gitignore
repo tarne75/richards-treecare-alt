@@ -1,0 +1,7 @@
+.DS_Store
+Thumbs.db
+node_modules/
+*.log
+
+# Internal documentation — kept on disk, never committed or deployed
+*.md
