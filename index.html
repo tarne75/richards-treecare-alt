@@ -26,6 +26,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="css/style.css">
 
+<link rel="preload" as="image" type="image/webp"
+      imagesrcset="images/gallery/climber-in-crown-400.webp 400w, images/gallery/climber-in-crown-800.webp 800w"
+      imagesizes="340px" fetchpriority="high">
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -38,7 +42,7 @@
   "email": "richard@richardstreecare.co.uk",
   "telephone": "+441582621675",
   "founder": { "@type": "Person", "name": "Richard Walsh" },
-  "image": "https://www.richards-treecare.co.uk/images/gallery/climber-rigging-tall-tree.jpg",
+  "image": "https://www.richards-treecare.co.uk/images/gallery/climber-in-crown-1400.webp",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "32 Garrard Way",
@@ -190,10 +194,15 @@
     </div>
 
     <figure class="hero-figure">
-      <img src="images/gallery/climber-rigging-tall-tree.jpg"
-           alt="Richard roped into the upper crown of a tall tree, rigging a limb for removal"
-           width="286" height="380" fetchpriority="high" decoding="async">
-      <figcaption>Sectional dismantling, Hertfordshire</figcaption>
+      <picture>
+        <source type="image/webp" sizes="340px"
+                srcset="images/gallery/climber-in-crown-400.webp 400w,
+                        images/gallery/climber-in-crown-800.webp 800w">
+        <img src="images/gallery/climber-in-crown-800.jpg"
+             alt="A climber roped into the upper crown of a bare tree, working against a clear blue sky"
+             width="1200" height="1600" fetchpriority="high" decoding="async">
+      </picture>
+      <figcaption>High in the crown, Hertfordshire</figcaption>
     </figure>
 
   </div>
@@ -280,40 +289,12 @@
       </p>
     </header>
 
-    <div class="gallery-grid" id="gallery-grid">
-      <button class="shot reveal" type="button" data-src="images/gallery/climber-dismantling-crown.jpg" data-caption="Sectional dismantling — working down a mature crown from the top">
-        <img src="images/gallery/climber-dismantling-crown.jpg" alt="Climber high in a tree, dismantling the crown section by section" width="226" height="300" loading="lazy" decoding="async"></button>
-      <button class="shot reveal" type="button" data-src="images/gallery/felling-cut-chainsaw.jpg" data-caption="Making the felling cut on a mature trunk">
-        <img src="images/gallery/felling-cut-chainsaw.jpg" alt="Chainsaw cutting into a large tree trunk during felling" width="223" height="297" loading="lazy" decoding="async"></button>
-      <button class="shot reveal" type="button" data-src="images/gallery/dismantling-trunk-blue-sky.jpg" data-caption="Reduced to a safe standing stem before final felling">
-        <img src="images/gallery/dismantling-trunk-blue-sky.jpg" alt="Tall trunk reduced to bare stems against a blue sky" width="286" height="382" loading="lazy" decoding="async"></button>
-      <button class="shot reveal" type="button" data-src="images/gallery/sectional-felling-stump.jpg" data-caption="The last section down — a large stem taken in controlled pieces">
-        <img src="images/gallery/sectional-felling-stump.jpg" alt="Tree surgeon standing on a large cut stump with a chainsaw" width="286" height="260" loading="lazy" decoding="async"></button>
-      <button class="shot reveal" type="button" data-src="images/gallery/mature-conifer-crown-work.jpg" data-caption="Crown work on a mature conifer">
-        <img src="images/gallery/mature-conifer-crown-work.jpg" alt="Mature conifer in a garden setting before crown work" width="226" height="303" loading="lazy" decoding="async"></button>
-      <button class="shot reveal" type="button" data-src="images/gallery/garden-trees-climbing-lines.jpg" data-caption="Climbing lines set in a group of garden trees">
-        <img src="images/gallery/garden-trees-climbing-lines.jpg" alt="Group of tall garden trees with climbing lines installed" width="226" height="303" loading="lazy" decoding="async"></button>
-      <button class="shot reveal" type="button" data-src="images/gallery/woodchipper-site-clearance.jpg" data-caption="Chipper on site — everything processed and taken away">
-        <img src="images/gallery/woodchipper-site-clearance.jpg" alt="Wood chipper working on site beside a reduced tree" width="286" height="214" loading="lazy" decoding="async"></button>
-      <button class="shot reveal" type="button" data-src="images/gallery/logs-stacked-site-clearance.jpg" data-caption="Timber cut and stacked, site left clear">
-        <img src="images/gallery/logs-stacked-site-clearance.jpg" alt="Cut logs stacked beside a fresh stump after felling" width="286" height="214" loading="lazy" decoding="async"></button>
-      <button class="shot reveal" type="button" data-src="images/gallery/crown-reduction-completed.jpg" data-caption="A completed crown reduction on a mature broadleaf">
-        <img src="images/gallery/crown-reduction-completed.jpg" alt="Mature broadleaf tree after a careful crown reduction" width="226" height="303" loading="lazy" decoding="async"></button>
-      <button class="shot reveal" type="button" data-src="images/gallery/mature-tree-barn-reduction.jpg" data-caption="Reduction work on a tree overhanging farm buildings">
-        <img src="images/gallery/mature-tree-barn-reduction.jpg" alt="Large tree beside a barn with the work vehicle parked below" width="226" height="303" loading="lazy" decoding="async"></button>
-      <button class="shot reveal" type="button" data-src="images/gallery/tall-tree-beside-barn.jpg" data-caption="Tall specimen assessed beside outbuildings">
-        <img src="images/gallery/tall-tree-beside-barn.jpg" alt="Tall bare tree standing beside a barn" width="226" height="303" loading="lazy" decoding="async"></button>
-      <button class="shot reveal" type="button" data-src="images/gallery/bare-crown-tree-removal.jpg" data-caption="Deadwood assessment on a declining specimen">
-        <img src="images/gallery/bare-crown-tree-removal.jpg" alt="Tree with a bare crown being assessed for removal" width="226" height="303" loading="lazy" decoding="async"></button>
-      <button class="shot reveal" type="button" data-src="images/gallery/mature-tree-open-lawn.jpg" data-caption="Mature specimen on open lawn, cleared and tidied">
-        <img src="images/gallery/mature-tree-open-lawn.jpg" alt="Mature tree on an open lawn after tree work, site cleared" width="226" height="303" loading="lazy" decoding="async"></button>
-      <button class="shot reveal" type="button" data-src="images/gallery/climber-rigging-tall-tree.jpg" data-caption="Rigging a heavy limb out over a garden">
-        <img src="images/gallery/climber-rigging-tall-tree.jpg" alt="Climber rigging a heavy limb high in a tall tree" width="286" height="380" loading="lazy" decoding="async"></button>
+    <div class="gallery-grid" id="gallery-grid" data-loading="true">
+      <p class="grid-placeholder">Loading photographs…</p>
     </div>
 
     <p class="gallery-note reveal">
-      These photographs are from the original site and are low resolution. New,
-      higher-quality images are on the way.
+      Every photograph is from a job I have carried out. Click any of them to see it full size.
     </p>
   </div>
 </section>
@@ -362,9 +343,14 @@
 
     <aside class="about-side">
       <figure class="about-figure">
-        <img src="images/gallery/felling-cut-chainsaw.jpg"
-             alt="Richard making a precise felling cut on a mature trunk"
-             width="223" height="297" loading="lazy" decoding="async">
+        <picture>
+          <source type="image/webp" sizes="(max-width: 980px) 90vw, 340px"
+                  srcset="images/gallery/chainsaw-at-the-butt-400.webp 400w,
+                          images/gallery/chainsaw-at-the-butt-800.webp 800w">
+          <img src="images/gallery/chainsaw-at-the-butt-800.jpg"
+               alt="A tree surgeon in helmet and chainsaw trousers standing beside the freshly cut butt of a large tree"
+               width="2048" height="1152" loading="lazy" decoding="async">
+        </picture>
       </figure>
       <ul class="about-list">
         <li>Over 20 years' hands-on experience</li>
@@ -686,8 +672,14 @@
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
   </button>
   <figure class="lb-figure">
-    <img id="lb-img" src="" alt="">
-    <figcaption id="lb-caption"></figcaption>
+    <picture>
+      <source id="lb-source" type="image/webp" srcset="">
+      <img id="lb-img" src="" alt="">
+    </picture>
+    <figcaption>
+      <span id="lb-caption"></span>
+      <span class="lb-count" id="lb-count"></span>
+    </figcaption>
   </figure>
 </dialog>
 

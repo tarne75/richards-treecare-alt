@@ -8,6 +8,7 @@
      3.  Collection loader (CSV with hard-coded fallback)
      4.  Services grid
      5.  FAQ accordion
+     5b. Gallery grid
      6.  Header: height variable, scrolled state, mobile nav
      7.  IntersectionObserver: reveals + scrollspy
      8.  Lightbox (native <dialog>)
@@ -18,7 +19,7 @@
   'use strict';
 
   var CONFIG = window.RTC_CONFIG || {};
-  var DATA   = window.RTC_DATA   || { services: [], faqs: [] };
+  var DATA   = window.RTC_DATA   || { services: [], faqs: [], gallery: [] };
 
   /* ---------------------------------------------------------------------
      1. ICONS — monoline 24x24, inherit currentColor
@@ -256,6 +257,72 @@
   }
 
   /* ---------------------------------------------------------------------
+     5b. GALLERY
+     Derivatives are produced by scripts/build-gallery.py. Widths offered:
+     400 and 800 in the grid, and the largest available tier in the lightbox.
+     A master narrower than a tier never gets that tier (no upscaling), so the
+     largest tier is derived from the master's own width rather than assumed.
+     --------------------------------------------------------------------- */
+  var GALLERY_TIERS = [400, 800, 1400];
+  var GRID_SIZES = '(max-width: 620px) 45vw, (max-width: 980px) 30vw, 220px';
+
+  function tierPath(file, width, ext) {
+    return 'images/gallery/' + file + '-' + width + '.' + (ext || 'webp');
+  }
+
+  function largestTier(width) {
+    var best = GALLERY_TIERS[0];
+    for (var i = 0; i < GALLERY_TIERS.length; i++) {
+      if (GALLERY_TIERS[i] <= width) best = GALLERY_TIERS[i];
+    }
+    return best;
+  }
+
+  var galleryGrid = document.getElementById('gallery-grid');
+  var galleryItems = [];
+
+  function shotMarkup(item) {
+    var srcset = tierPath(item.file, 400) + ' 400w, ' + tierPath(item.file, 800) + ' 800w';
+    var orient = item.w > item.h ? 'landscape' : 'portrait';
+    return '' +
+      '<button class="shot reveal" type="button" data-orient="' + orient + '" ' +
+              'data-file="' + esc(item.file) + '">' +
+        '<picture>' +
+          '<source type="image/webp" srcset="' + srcset + '" sizes="' + GRID_SIZES + '">' +
+          '<img src="' + tierPath(item.file, 800, 'jpg') + '" alt="' + esc(item.alt) + '" ' +
+               'width="' + item.w + '" height="' + item.h + '" loading="lazy" decoding="async">' +
+        '</picture>' +
+      '</button>';
+  }
+
+  function renderGallery(items) {
+    galleryItems = items || [];
+    if (!galleryGrid) return;
+
+    if (!galleryItems.length) {
+      galleryGrid.innerHTML =
+        '<p class="grid-placeholder">Photographs unavailable right now — ' +
+        '<a href="#contact">ask me and I will send some over</a>.</p>';
+      return;
+    }
+
+    galleryGrid.innerHTML = galleryItems.map(shotMarkup).join('');
+    galleryGrid.removeAttribute('data-loading');
+    observeReveals(galleryGrid);
+  }
+
+  function normaliseGalleryItem(row) {
+    if (!row.file) return null;
+    return {
+      file: row.file,
+      w: parseInt(row.w, 10) || 1200,
+      h: parseInt(row.h, 10) || 1600,
+      alt: row.alt || '',
+      caption: row.caption || ''
+    };
+  }
+
+  /* ---------------------------------------------------------------------
      6. HEADER
      --------------------------------------------------------------------- */
   var header    = document.getElementById('site-header');
@@ -372,13 +439,15 @@
      8. LIGHTBOX — native <dialog> gives focus trapping and Esc for free
      --------------------------------------------------------------------- */
   function initLightbox() {
-    var dialog  = document.getElementById('lightbox');
-    var img     = document.getElementById('lb-img');
-    var caption = document.getElementById('lb-caption');
+    var dialog   = document.getElementById('lightbox');
+    var source   = document.getElementById('lb-source');
+    var img      = document.getElementById('lb-img');
+    var caption  = document.getElementById('lb-caption');
+    var counter  = document.getElementById('lb-count');
     var closeBtn = document.getElementById('lb-close');
-    var prevBtn = document.getElementById('lb-prev');
-    var nextBtn = document.getElementById('lb-next');
-    var shots   = Array.prototype.slice.call(document.querySelectorAll('.shot'));
+    var prevBtn  = document.getElementById('lb-prev');
+    var nextBtn  = document.getElementById('lb-next');
+    var shots    = Array.prototype.slice.call(document.querySelectorAll('.shot'));
 
     if (!dialog || !shots.length || typeof dialog.showModal !== 'function') return;
 
@@ -386,12 +455,18 @@
 
     function show(i) {
       index = (i + shots.length) % shots.length;
-      var shot = shots[index];
-      var thumb = shot.querySelector('img');
-      img.src = shot.dataset.src;
-      img.alt = thumb ? thumb.alt : '';
-      caption.textContent = shot.dataset.caption || '';
-      dialog.dataset.position = (index + 1) + ' of ' + shots.length;
+      var item = galleryItems[index];
+      if (!item) return;
+
+      // Order matters: set the <source> first, then the <img> src, so the
+      // browser re-runs source selection with the new candidates.
+      source.srcset = tierPath(item.file, largestTier(item.w));
+      img.src = tierPath(item.file, Math.min(800, largestTier(item.w)), 'jpg');
+      img.alt = item.alt || '';
+      img.width = item.w;
+      img.height = item.h;
+      caption.textContent = item.caption || '';
+      if (counter) counter.textContent = (index + 1) + ' / ' + shots.length;
     }
 
     shots.forEach(function (shot, i) {
@@ -500,10 +575,12 @@
 
     Promise.all([
       loadCollection(CONFIG.SERVICES_CSV_URL, DATA.services, normaliseService),
-      loadCollection(CONFIG.FAQ_CSV_URL, DATA.faqs, normaliseFaq)
+      loadCollection(CONFIG.FAQ_CSV_URL, DATA.faqs, normaliseFaq),
+      loadCollection(CONFIG.GALLERY_CSV_URL, DATA.gallery, normaliseGalleryItem)
     ]).then(function (results) {
       renderServices(results[0]);
       renderFaqs(results[1]);
+      renderGallery(results[2]);
       initLightbox();
       setHeaderHeight();
     });

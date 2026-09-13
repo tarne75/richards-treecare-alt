@@ -489,6 +489,16 @@ address { font-style: normal; }
   box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.65);
   rotate: 1.4deg;
 }
+.hero-figure picture,
+.about-figure picture,
+.lb-figure picture { display: block; }
+
+/* A <picture> is an inline box that shrink-wraps its <img>. Inside a .shot
+   that means `height: 100%` on the image has no definite parent to resolve
+   against, so it silently falls back to the intrinsic ratio and the cell
+   letterboxes. Giving the picture the full box fixes it. */
+.shot picture { display: block; width: 100%; height: 100%; }
+
 .hero-figure img {
   width: 100%;
   border-radius: calc(var(--r-lg) - 8px);
@@ -646,8 +656,11 @@ address { font-style: normal; }
    ------------------------------------------------------------------------- */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: clamp(0.6rem, 0.35rem + 0.8vw, 1rem);
+  /* Landscape shots take two columns; dense packing back-fills the holes that
+     leaves, so the grid stays flush without reordering the markup. */
+  grid-auto-flow: dense;
 }
 
 .shot {
@@ -658,12 +671,17 @@ address { font-style: normal; }
   background: var(--paper-3);
   overflow: hidden;
   cursor: zoom-in;
+  aspect-ratio: 4 / 5;
   transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease),
               border-color 0.25s var(--ease), opacity 0.6s var(--ease);
 }
+.shot[data-orient="landscape"] {
+  grid-column: span 2;
+  aspect-ratio: 8 / 5;
+}
 .shot img {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  height: 100%;
   object-fit: cover;
   transition: transform 0.5s var(--ease), filter 0.35s var(--ease);
   filter: saturate(1.02);
@@ -682,8 +700,8 @@ address { font-style: normal; }
   /* Hug the image rather than floating it in a large empty panel — the source
      photographs are small, so a fixed-width modal looks broken. */
   width: max-content;
-  max-width: min(92vw, 900px);
-  max-height: 92svh;
+  max-width: min(94vw, 1180px);
+  max-height: 94svh;
   padding: 0;
   border: none;
   border-radius: var(--r-lg);
@@ -705,18 +723,30 @@ address { font-style: normal; }
   /* Height-driven sizing gives every photo a consistent presence despite the
      originals varying from 214px to 382px tall. Capped so the low-resolution
      source is never blown up beyond roughly 2x. */
-  height: min(74svh, 620px);
+  height: min(80svh, 860px);
   width: auto;
-  max-width: min(92vw, 900px);
+  max-width: min(92vw, 1180px);
   border-radius: var(--r);
   background: var(--forest-900);
   box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.8);
 }
 .lb-figure figcaption {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
   max-width: 58ch;
   text-align: center;
   font-size: var(--fs-sm);
   color: color-mix(in oklab, white 82%, var(--forest-300));
+}
+.lb-count {
+  flex: none;
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  color: color-mix(in oklab, white 52%, var(--forest-300));
 }
 
 .lb-close, .lb-nav {
